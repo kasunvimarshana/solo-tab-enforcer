@@ -1,12 +1,5 @@
----
-
-## ✅ To Build & Publish
-
-```bash
-npm install
-npm run build
-npm login
-npm publish --access public
-```
-
----
+# To Build & Publish:
+## 1. npm install
+## 2. npm run build
+## 3. npm login
+## 4. npm publish --access public
