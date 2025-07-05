@@ -1,0 +1,61 @@
+{
+  "name": "solo-tab-enforcer",
+  "version": "1.0.0",
+  "description": "A comprehensive Node.js package to prevent users from opening multiple tabs of the same application and observe all tabs",
+  "main": "index.js",
+  "module": "index.esm.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "babel src --out-dir lib --presets @babel/preset-env",
+    "build:esm": "babel src --out-dir esm --presets @babel/preset-env --plugins @babel/plugin-transform-modules-umd",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "single-tab",
+    "tab-enforcer",
+    "browser-tab",
+    "tab-management",
+    "web-security",
+    "session-management"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kasunvimarshana/solo-tab-enforcer.git"
+  },
+  "files": [
+    "lib/",
+    "esm/",
+    "index.js",
+    "index.esm.js",
+    "index.d.ts",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.22.0",
+    "@babel/core": "^7.22.0",
+    "@babel/plugin-transform-modules-umd": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "eslint": "^8.44.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^30.0.4",
+    "jsdom": "^22.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  }
+}
