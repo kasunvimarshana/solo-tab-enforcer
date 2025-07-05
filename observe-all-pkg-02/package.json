@@ -1,26 +1,26 @@
 {
   "name": "observe-all",
   "version": "1.0.0",
-  "description": "Prevent users from using multiple tabs of your web app simultaneously.",
+  "description": "Enforce single tab usage using native APIs (BroadcastChannel or localStorage)",
   "main": "dist/observe-all.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "rollup -c",
-    "clean": "rimraf dist",
-    "prepare": "npm run clean && npm run build"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mkdir:test": "mkdir dist 2>nul & echo 'dist folder created.'",
+    "build": "shx mkdir -p dist && cpy src/ObserveAll.js dist --rename=observe-all.js --flat"
+  },
+  "devDependencies": {
+    "cpy-cli": "^5.0.0",
+    "shx": "^0.3.4"
   },
   "keywords": [
     "single-tab",
-    "browser",
-    "tab-lock",
-    "observe",
-    "session"
+    "observe-all",
+    "broadcastchannel",
+    "localStorage",
+    "native",
+    "no-dependency"
   ],
   "author": "Kasun Vimarshana",
-  "license": "MIT",
-  "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.4",
-    "rimraf": "^6.0.1",
-    "rollup": "^3.29.5"
-  }
+  "license": "MIT"
 }
