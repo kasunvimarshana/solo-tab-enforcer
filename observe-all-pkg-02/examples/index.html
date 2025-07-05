@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ObserveAll Example</title>
+  </head>
+  <body>
+    <h1>observe-all Example</h1>
+    <p>Open this page in another tab to see multi-tab prevention in action.</p>
+
+    <script src="../dist/observe-all.js"></script>
+    <script>
+      const observer = new ObserveAll({
+        channelName: 'my-app-lock',
+        onBlock: () => {
+          document.body.innerHTML = '<h2>Another tab is already open!</h2>';
+        },
+        onFocus: () => console.log('This tab focused'),
+        onBlur: () => console.log('This tab blurred'),
+      });
+    </script>
+  </body>
+</html>
