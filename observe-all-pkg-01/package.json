@@ -1,0 +1,25 @@
+{
+  "name": "observe-all",
+  "version": "1.0.0",
+  "description": "Prevent users from opening and interacting with multiple tabs of the same web app.",
+  "main": "dist/observe-all.js",
+  "module": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mkdir:test": "mkdir dist 2>nul & echo 'dist folder created.'",
+    "build": "shx mkdir -p dist && cpy src/index.js dist --rename=observe-all.js --flat"
+  },
+  "devDependencies": {
+    "cpy-cli": "^5.0.0",
+    "shx": "^0.3.4"
+  },
+  "keywords": [
+    "single-tab",
+    "multi-tab-prevention",
+    "session",
+    "broadcastchannel",
+    "observe-all"
+  ],
+  "author": "Kasun Vimarshana",
+  "license": "ISC"
+}

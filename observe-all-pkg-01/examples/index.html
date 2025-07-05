@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ObserveAll Example</title>
+  </head>
+  <body>
+    <h1>observe-all Example</h1>
+    <p>Open this page in another tab to see multi-tab prevention in action.</p>
+
+    <script type="module">
+      import ObserveAll from '../src/index.js';
+
+      new ObserveAll({
+        onBlock: () => {
+          document.body.innerHTML = '<h2>Blocked: Another tab is active.</h2>';
+        },
+        onFocus: () => console.log('Tab is in focus'),
+        onBlur: () => console.log('Tab is out of focus'),
+      });
+    </script>
+  </body>
+</html>
