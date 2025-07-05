@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>solo tab enforcer</title>
+    <style>
+      /* Reset and base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        background: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 90%;
+        max-width: 400px;
+      }
+
+      .title {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Solo Tab Enforcer</h1>
+    </div>
+
+    <script>
+      (function () {
+        const TAB_ID = Date.now() + '-' + Math.random(); // Unique tab ID
+        const LOCK_KEY = 'app-tab-lock';
+        const HEARTBEAT_KEY = 'app-tab-heartbeat';
+        const HEARTBEAT_INTERVAL = 1000; // 1 second
+        const TIMEOUT = 3000; // 3 seconds until another tab is considered inactive
+
+        let heartbeatInterval;
+
+        function setLock() {
+          localStorage.setItem(LOCK_KEY, TAB_ID);
+        }
+
+        function clearLock() {
+          const current = localStorage.getItem(LOCK_KEY);
+          if (current === TAB_ID) {
+            localStorage.removeItem(LOCK_KEY);
+          }
+        }
+
+        function startHeartbeat() {
+          heartbeatInterval = setInterval(() => {
+            localStorage.setItem(HEARTBEAT_KEY, Date.now().toString());
+          }, HEARTBEAT_INTERVAL);
+        }
+
+        function stopHeartbeat() {
+          clearInterval(heartbeatInterval);
+        }
+
+        function isPrimaryTab() {
+          const lock = localStorage.getItem(LOCK_KEY);
+          const lastHeartbeat = parseInt(
+            localStorage.getItem(HEARTBEAT_KEY) || '0',
+            10
+          );
+          const now = Date.now();
+
+          // If no other tab active or timeout passed
+          return !lock || now - lastHeartbeat > TIMEOUT;
+        }
+
+        function initTabControl() {
+          if (isPrimaryTab()) {
+            setLock();
+            startHeartbeat();
+          } else {
+            alert('App is already open in another tab.');
+            // Optionally redirect or block the UI
+            document.body.innerHTML =
+              '<h2>This app is already open in another tab.</h2>';
+            return;
+          }
+
+          // Release lock on unload
+          window.addEventListener('beforeunload', () => {
+            clearLock();
+            stopHeartbeat();
+          });
+
+          // Listen for lock changes (optional fallback)
+          window.addEventListener('storage', (e) => {
+            if (e.key === LOCK_KEY || e.key === HEARTBEAT_KEY) {
+              if (!isPrimaryTab()) {
+                alert('Another tab has taken control.');
+                window.location.reload(); // or close or disable UI
+              }
+            }
+          });
+        }
+
+        initTabControl();
+      })();
+    </script>
+  </body>
+</html>
