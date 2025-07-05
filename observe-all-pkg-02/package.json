@@ -1,0 +1,18 @@
+{
+  "name": "observe-all",
+  "version": "1.0.0",
+  "description": "Pure utility for DOM, value, and event observation with cross-browser support",
+  "main": "src/index.js",
+  "type": "module",
+  "keywords": [
+    "observe",
+    "mutation",
+    "intersection",
+    "resize",
+    "event",
+    "proxy",
+    "utility"
+  ],
+  "author": "Kasun Vimarshana",
+  "license": "MIT"
+}
