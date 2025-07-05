@@ -1,0 +1,59 @@
+{
+  "name": "solo-tab-enforcer",
+  "version": "1.0.0",
+  "description": "Cross-browser solution for enforcing single tab usage in web applications",
+  "main": "dist/solo-tab-enforcer.js",
+  "module": "src/index.js",
+  "browser": "dist/solo-tab-enforcer.min.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node build.js",
+    "test": "node test/test.js",
+    "test:full": "FULL_TEST=1 node test/test.js",
+    "dev": "node examples/server.js",
+    "start": "node examples/server.js"
+  },
+  "keywords": [
+    "tab",
+    "enforcer",
+    "single-tab",
+    "browser",
+    "cross-browser",
+    "session",
+    "duplicate",
+    "prevention",
+    "tab-management",
+    "broadcast-channel",
+    "localStorage",
+    "visibility-api"
+  ],
+  "author": "Kasun Vimarshana <kasunvmail@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kasunvimarshana/solo-tab-enforcer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kasunvimarshana/solo-tab-enforcer/issues"
+  },
+  "homepage": "https://github.com/kasunvimarshana/solo-tab-enforcer#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "Chrome >= 60",
+    "Firefox >= 55",
+    "Safari >= 10",
+    "Edge >= 16",
+    "ie >= 11"
+  ],
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  }
+}

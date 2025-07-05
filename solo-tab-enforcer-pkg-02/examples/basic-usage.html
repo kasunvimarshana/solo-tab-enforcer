@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Tab Enforcer - Basic Usage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status.active {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .button.danger {
+            background-color: #dc3545;
+        }
+        .button.danger:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Solo Tab Enforcer - Basic Usage</h1>
+        <p>This example demonstrates the basic usage of the Solo Tab Enforcer package.</p>
+        
+        <div id="status" class="status">Initializing...</div>
+        
+        <div class="info">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Open this page in multiple tabs</li>
+                <li>Only one tab should remain active</li>
+                <li>Other tabs will show a warning and close</li>
+                <li>Try switching between tabs to see the enforcer in action</li>
+            </ol>
+        </div>
+        
+        <div class="info">
+            <h3>Tab Information:</h3>
+            <div id="tabInfo">Loading...</div>
+        </div>
+        
+        <div class="info">
+            <h3>Browser Support:</h3>
+            <div id="browserInfo">Loading...</div>
+        </div>
+        
+        <div>
+            <button class="button" onclick="toggleMultipleTabs()">Toggle Multiple Tabs</button>
+            <button class="button" onclick="forceRegister()">Force Register</button>
+            <button class="button danger" onclick="destroyEnforcer()">Destroy Enforcer</button>
+        </div>
+        
+        <div class="info">
+            <h3>Event Log:</h3>
+            <div id="eventLog" style="height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div>
+        </div>
+    </div>
+
+    <script src="../dist/solo-tab-enforcer.js"></script>
+    <script>
+        // Event logging
+        function logEvent(message) {
+            const eventLog = document.getElementById('eventLog');
+            const timestamp = new Date().toLocaleTimeString();
+            eventLog.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        // Initialize the enforcer
+        const enforcer = new SoloTabEnforcer({
+            debug: true,
+            checkInterval: 1000,
+            warningMessage: 'Another tab is already open! This tab will be closed.',
+            onTabConflict: function(existingTab) {
+                logEvent('Tab conflict detected with tab: ' + existingTab.id);
+                updateStatus('Tab conflict detected!', 'inactive');
+                
+                // Show custom warning
+                if (confirm('Another tab is already open. Close this tab?')) {
+                    window.close();
+                }
+            },
+            onTabActivated: function() {
+                logEvent('Tab activated');
+                updateStatus('Tab is active and registered', 'active');
+            },
+            onTabDeactivated: function() {
+                logEvent('Tab deactivated');
+                updateStatus('Tab is inactive', 'inactive');
+            }
+        });
+
+        // Initialize the enforcer
+        enforcer.init();
+        logEvent('Solo Tab Enforcer initialized');
+
+        // Update status display
+        function updateStatus(message, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = 'status ' + type;
+        }
+
+        // Update tab information
+        function updateTabInfo() {
+            const tabInfo = enforcer.getTabInfo();
+            const browserInfo = SoloTabEnforcer.getBrowserInfo();
+            const features = SoloTabEnforcer.checkSupport();
+            
+            document.getElementById('tabInfo').innerHTML = `
+                <strong>Tab ID:</strong> ${tabInfo.id}<br>
+                <strong>Is Active:</strong> ${tabInfo.isActive}<br>
+                <strong>Is Initialized:</strong> ${tabInfo.isInitialized}<br>
+                <strong>Multiple Tabs Allowed:</strong> ${tabInfo.options.allowMultipleTabs}
+            `;
+            
+            document.getElementById('browserInfo').innerHTML = `
+                <strong>Browser:</strong> ${browserInfo.name} ${browserInfo.version}<br>
+                <strong>LocalStorage:</strong> ${features.localStorage}<br>
+                <strong>BroadcastChannel:</strong> ${features.broadcastChannel}<br>
+                <strong>Visibility API:</strong> ${features.visibilityAPI}<br>
+                <strong>Storage Events:</strong> ${features.storageEvents}
+            `;
+        }
+
+        // Toggle multiple tabs
+        function toggleMultipleTabs() {
+            if (enforcer.areMultipleTabsAllowed && enforcer.areMultipleTabsAllowed()) {
+                enforcer.disallowMultipleTabs();
+                logEvent('Multiple tabs disabled');
+            } else {
+                enforcer.allowMultipleTabs();
+                logEvent('Multiple tabs enabled');
+            }
+            updateTabInfo();
+        }
+
+        // Force register tab
+        function forceRegister() {
+            if (enforcer.forceRegister) {
+                enforcer.forceRegister();
+                logEvent('Force registered tab');
+            }
+        }
+
+        // Destroy enforcer
+        function destroyEnforcer() {
+            if (confirm('Are you sure you want to destroy the enforcer?')) {
+                enforcer.destroy();
+                logEvent('Enforcer destroyed');
+                updateStatus('Enforcer destroyed', 'inactive');
+            }
+        }
+
+        // Update information periodically
+        setInterval(updateTabInfo, 2000);
+        updateTabInfo();
+
+        // Set initial status
+        updateStatus('Tab is active and registered', 'active');
+    </script>
+</body>
+</html>
