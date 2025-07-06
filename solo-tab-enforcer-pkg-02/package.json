@@ -1,6 +1,6 @@
 {
   "name": "solo-tab-enforcer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cross-browser solution for enforcing single tab usage in web applications",
   "main": "dist/solo-tab-enforcer.js",
   "module": "src/index.js",

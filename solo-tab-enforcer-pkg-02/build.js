@@ -23,7 +23,7 @@ function buildDistribution() {
 
   const banner = `/**
  * Solo Tab Enforcer - Cross-Browser Tab Management
- * Version: 1.0.0
+ * Version: 1.0.1
  * License: MIT
  * 
  * A comprehensive solution for enforcing single tab usage across all browsers.
@@ -372,7 +372,7 @@ function updatePackageJson() {
 
   const pkg = {
     name: 'solo-tab-enforcer',
-    version: '1.0.0',
+    version: '1.0.1',
     description:
       'Cross-browser solution for enforcing single tab usage in web applications',
     main: 'dist/solo-tab-enforcer.js',
